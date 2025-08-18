@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do App</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="container">
+      <h1 id="title">To-Do List</h1>
+
+      <form id="input-container">
+        <input
+          type="text"
+          id="task-input"
+          placeholder="Добавить задачу"
+          autofocus
+        />
+        <button id="add-task-button" type="submit" class="button">
+          Добавить
+        </button>
+      </form>
+
+      <ul id="task-list">
+        <div class="task-container">
+          <label class="checkbox-and-title">
+            <input type="checkbox" class="checkbox" />
+            <li class="task-title" style="text-decoration: line-through">
+              1. Купить пива
+            </li>
+          </label>
+          <div class="features">
+            <button class="button remove-button">Удалить</button>
+          </div>
+        </div>
+        <div class="task-container">
+          <label class="checkbox-and-title">
+            <input type="checkbox" class="checkbox" />
+            <li class="task-title">2. Поспать</li>
+          </label>
+          <div class="features">
+            <img src="reminder.svg" class="reminder-icon" alt="Set Reminder" />
+            <button class="button remove-button">Удалить</button>
+          </div>
+        </div>
+      </ul>
+
+      <div id="filter-buttons">
+        <button class="button">Все задачи</button
+        ><button class="button">Выполненные задачи</button
+        ><button class="button">Невыполненные задачи</button>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
