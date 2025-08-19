@@ -5,16 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-Do App</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="container">
       <h1 id="title">To-Do List</h1>
-
+      <img src="dark.svg" alt="" id="dark-mode-icon" />
       <form id="input-container">
         <input
           type="text"
           id="task-input"
-          placeholder="Добавить задачу"
+          placeholder="Название задачи"
           autofocus
         />
         <button id="add-task-button" type="submit" class="button">
@@ -23,33 +29,17 @@
       </form>
 
       <ul id="task-list">
-        <div class="task-container">
-          <label class="checkbox-and-title">
-            <input type="checkbox" class="checkbox" />
-            <li class="task-title" style="text-decoration: line-through">
-              1. Купить пива
-            </li>
-          </label>
-          <div class="features">
-            <button class="button remove-button">Удалить</button>
-          </div>
-        </div>
-        <div class="task-container">
-          <label class="checkbox-and-title">
-            <input type="checkbox" class="checkbox" />
-            <li class="task-title">2. Поспать</li>
-          </label>
-          <div class="features">
-            <img src="reminder.svg" class="reminder-icon" alt="Set Reminder" />
-            <button class="button remove-button">Удалить</button>
-          </div>
-        </div>
+        <img src="empty.svg" alt="" id="no-tasks-icon" />
+        <!-- таски -->
       </ul>
 
       <div id="filter-buttons">
-        <button class="button">Все задачи</button
-        ><button class="button">Выполненные задачи</button
-        ><button class="button">Невыполненные задачи</button>
+        <button class="button" data-filter="all">Все задачи</button
+        ><button class="button" data-filter="completed">
+          Выполненные задачи</button
+        ><button class="button" data-filter="active">
+          Невыполненные задачи
+        </button>
       </div>
     </div>
     <script src="app.js"></script>
