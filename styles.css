@@ -16,7 +16,7 @@ input {
 }
 
 #container {
-  max-width: 600px;
+  max-width: 500px;
   width: calc(100% - 40px);
   display: flex;
   flex-direction: column;
@@ -39,14 +39,14 @@ input {
 #input-container {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  gap: 10px;
   padding: 20px 10px;
 }
 
 #task-input {
   height: 40px;
   width: 100%;
-  padding: 0 15px;
+  padding: 0 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
@@ -89,6 +89,7 @@ input {
 .task-title {
   font-size: 16px;
   padding-right: 5px;
+  word-break: break-word;
 }
 
 .features {
@@ -134,6 +135,11 @@ input {
   justify-content: center;
   gap: 20px;
   padding: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-button {
+  flex: 1 1 120px;
 }
 
 .completed {
