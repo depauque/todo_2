@@ -17,7 +17,7 @@ input {
 
 #container {
   max-width: 700px;
-  width: 100%;
+  width: calc(100% - 40px);
   display: flex;
   flex-direction: column;
   background: white;
@@ -131,7 +131,7 @@ input {
   display: flex;
   justify-content: center;
   gap: 20px;
-  padding: 20px 40px;
+  padding: 20px;
 }
 
 .completed {
