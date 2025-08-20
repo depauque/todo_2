@@ -114,9 +114,8 @@ function renderTasks(title, completed = false, local) {
   reminderIcon.className = "reminder-icon";
   reminderIcon.alt = "Set Reminder";
   featuresDiv.appendChild(reminderIcon);
-  const removeButton = document.createElement("button");
+  const removeButton = document.createElement("div");
   removeButton.className = "button remove-button";
-  removeButton.textContent = "Удалить";
   removeButton.addEventListener("click", () => {
     taskList.removeChild(taskContainer);
     saveTasks();

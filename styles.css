@@ -16,14 +16,13 @@ input {
 }
 
 #container {
-  max-width: 700px;
+  max-width: 600px;
   width: calc(100% - 40px);
   display: flex;
   flex-direction: column;
   background: white;
   border: 2px solid #ccc;
   margin: 20px auto;
-  padding: 0 40px;
   font-size: 16px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -41,7 +40,7 @@ input {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  padding: 20px;
+  padding: 20px 10px;
 }
 
 #task-input {
@@ -88,14 +87,14 @@ input {
 }
 
 .task-title {
-  font-size: 18px;
-  flex-grow: 1;
+  font-size: 16px;
+  padding-right: 5px;
 }
 
 .features {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .reminder-icon {
@@ -121,10 +120,13 @@ input {
 .remove-button {
   background: #dd4444;
   margin-left: auto;
+  background: url("delete1.svg") no-repeat center, #dd4444;
+  width: 35px;
+  height: 35px;
 }
 
 .remove-button:hover {
-  background: #cc0000;
+  background: url("delete2.svg") no-repeat center, #bb0000;
 }
 
 #filter-buttons {
