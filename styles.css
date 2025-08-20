@@ -22,7 +22,7 @@ input {
   flex-direction: column;
   background: white;
   border: 2px solid #ccc;
-  margin: 60px;
+  margin: 20px auto;
   padding: 0 40px;
   font-size: 16px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
@@ -41,7 +41,7 @@ input {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  padding: 20px 40px;
+  padding: 20px;
 }
 
 #task-input {
@@ -54,6 +54,7 @@ input {
 }
 
 #task-list {
+  min-height: 200px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -66,10 +67,9 @@ input {
 .task-container {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #ccc;
-  height: 50px;
+  min-height: 50px;
   align-items: center;
-  padding: 0 10px;
+  padding: 10px;
   background: white;
   border-radius: 5px;
 }
@@ -84,10 +84,12 @@ input {
   width: 20px;
   height: 20px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .task-title {
   font-size: 18px;
+  flex-grow: 1;
 }
 
 .features {
@@ -128,7 +130,7 @@ input {
 #filter-buttons {
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 20px;
   padding: 20px 40px;
 }
 
@@ -136,8 +138,6 @@ input {
   text-decoration: line-through;
   color: #999;
 }
-
-/* темная тема */
 
 #dark-mode-icon {
   width: 30px;
@@ -163,17 +163,15 @@ body.dark-mode {
 }
 
 #task-list.dark-mode {
-  background: #555;
-  border-color: #666;
+  background: #666;
 }
 
 .task-container.dark-mode {
   background: #555;
-  border-color: #666;
 }
 
 #no-tasks-icon {
-  width: 20%;
+  max-width: 150px;
   margin: 0 auto;
   display: none;
 }

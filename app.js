@@ -6,6 +6,8 @@ const API_URL = "https://jsonplaceholder.typicode.com/todos?_limit=5";
 
 loadTasks();
 
+// обработчики событий
+
 inputContainer.addEventListener("submit", (e) => {
   e.preventDefault();
   addTask();
@@ -15,8 +17,29 @@ taskList.addEventListener("change", (e) => {
   if (e.target.classList.contains("checkbox")) {
     const taskContainer = e.target.closest(".task-container");
     const taskTitle = taskContainer.querySelector(".task-title");
-    taskTitle.classList.toggle("completed", e.target.checked); // ставим класс completed если чекбокс отмечен
+    const taskReminderIcon = taskContainer.querySelector(".reminder-icon");
+    taskTitle.classList.toggle("completed", e.target.checked);
+    if (e.target.checked) {
+      taskReminderIcon.style.display = "none";
+    } else {
+      taskReminderIcon.style.display = "block";
+    }
     saveTasks();
+  }
+});
+
+taskList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("reminder-icon")) {
+    const taskContainer = e.target.closest(".task-container");
+    const taskTitle = taskContainer.querySelector(".task-title").textContent;
+    const time = prompt(`Установить напоминание для ${taskTitle} в секундах`);
+    if (time === null) return;
+    if (!isNaN(time)) {
+      alert(`Напоминание для ${taskTitle} установлено на ${time} секунд`);
+      setTimeout(() => alert(`Напоминание: ${taskTitle}`), time * 1000);
+    } else {
+      alert(`Введите корректное время в секундах`);
+    }
   }
 });
 
@@ -30,6 +53,25 @@ filterButtons.addEventListener("click", (e) => {
     e.target.classList.add("active");
   }
 });
+
+darkModeIcon.addEventListener("click", () => {
+  const h1Title = document.getElementById("title");
+  const container = document.getElementById("container");
+  const taskList = document.getElementById("task-list");
+  const taskContainers = document.querySelectorAll(".task-container");
+  document.body.classList.toggle("dark-mode");
+  h1Title.classList.toggle("dark-mode");
+  container.classList.toggle("dark-mode");
+  taskList.classList.toggle("dark-mode");
+  taskContainers.forEach((task) => {
+    task.classList.toggle("dark-mode");
+  });
+  darkModeIcon.src = document.body.classList.contains("dark-mode")
+    ? "light.svg"
+    : "dark.svg";
+});
+
+// функции
 
 async function loadTasks() {
   const response = await fetch(API_URL);
@@ -46,7 +88,9 @@ function loadLocalTasks() {
 
 function renderTasks(title, completed = false, local) {
   const taskContainer = document.createElement("li");
-  taskContainer.className = "task-container";
+  taskContainer.className = document.body.classList.contains("dark-mode")
+    ? "task-container dark-mode"
+    : "task-container";
   local
     ? taskContainer.classList.add("local-task")
     : taskContainer.classList.remove("local-task");
@@ -81,6 +125,9 @@ function renderTasks(title, completed = false, local) {
   featuresDiv.appendChild(removeButton);
   taskContainer.appendChild(featuresDiv);
   taskList.appendChild(taskContainer);
+  if (completed) {
+    reminderIcon.style.display = "none";
+  }
 }
 
 function addTask() {
@@ -94,7 +141,6 @@ function addTask() {
   }
 }
 
-// соханяем только локальные таски
 function saveTasks() {
   const tasks = Array.from(taskList.querySelectorAll("li.local-task")).map(
     (task) => {
@@ -112,28 +158,11 @@ function saveTasks() {
 function checkEmptyList() {
   const noTasksIcon = document.getElementById("no-tasks-icon");
   if (taskList.querySelectorAll("li.task-container").length === 0) {
-    noTasksIcon.style.display = "block"; // показываем иконку если нет задач
+    noTasksIcon.style.display = "block";
   } else {
     noTasksIcon.style.display = "none";
   }
 }
-
-darkModeIcon.addEventListener("click", () => {
-  const h1Title = document.getElementById("title");
-  const container = document.getElementById("container");
-  const taskList = document.getElementById("task-list");
-  const taskContainers = document.querySelectorAll(".task-container");
-  document.body.classList.toggle("dark-mode");
-  h1Title.classList.toggle("dark-mode");
-  container.classList.toggle("dark-mode");
-  taskList.classList.toggle("dark-mode");
-  taskContainers.forEach((task) => {
-    task.classList.toggle("dark-mode");
-  });
-  darkModeIcon.src = document.body.classList.contains("dark-mode")
-    ? "light.svg"
-    : "dark.svg";
-});
 
 function filterTasks(filter) {
   const tasks = taskList.querySelectorAll("li.task-container");
