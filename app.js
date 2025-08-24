@@ -2,11 +2,12 @@ const inputContainer = document.getElementById("input-container");
 const taskList = document.getElementById("task-list");
 const filterButtons = document.getElementById("filter-buttons");
 const darkModeIcon = document.getElementById("dark-mode-icon");
-const API_URL = "https://jsonplaceholder.typicode.com/todos?_limit=5";
 
 loadTasks();
 
-// обработчики событий
+if (localStorage.getItem("theme") === "dark") {
+  toggleDarkMode();
+}
 
 inputContainer.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -17,28 +18,20 @@ taskList.addEventListener("change", (e) => {
   if (e.target.classList.contains("checkbox")) {
     const taskContainer = e.target.closest(".task-container");
     const taskTitle = taskContainer.querySelector(".task-title");
-    const taskReminderIcon = taskContainer.querySelector(".reminder-icon");
     taskTitle.classList.toggle("completed", e.target.checked);
-    if (e.target.checked) {
-      taskReminderIcon.style.display = "none";
-    } else {
-      taskReminderIcon.style.display = "block";
-    }
     saveTasks();
   }
 });
 
 taskList.addEventListener("click", (e) => {
-  if (e.target.classList.contains("reminder-icon")) {
+  if (e.target.classList.contains("edit-icon")) {
     const taskContainer = e.target.closest(".task-container");
-    const taskTitle = taskContainer.querySelector(".task-title").textContent;
-    const time = prompt(`Установить напоминание для ${taskTitle} в секундах`);
-    if (time === null) return;
-    if (!isNaN(time)) {
-      alert(`Напоминание для ${taskTitle} установлено на ${time} секунд`);
-      setTimeout(() => alert(`Напоминание: ${taskTitle}`), time * 1000);
-    } else {
-      alert(`Введите корректное время в секундах`);
+    const taskTitleElement = taskContainer.querySelector(".task-title");
+    const currentTitle = taskTitleElement.textContent;
+    const newTitle = prompt("Редактировать задачу:", currentTitle);
+    if (newTitle !== null && newTitle.trim() !== "") {
+      taskTitleElement.textContent = newTitle.trim();
+      saveTasks();
     }
   }
 });
@@ -54,36 +47,12 @@ filterButtons.addEventListener("click", (e) => {
   }
 });
 
-darkModeIcon.addEventListener("click", () => {
-  const h1Title = document.getElementById("title");
-  const container = document.getElementById("container");
-  const taskList = document.getElementById("task-list");
-  const taskContainers = document.querySelectorAll(".task-container");
-  document.body.classList.toggle("dark-mode");
-  h1Title.classList.toggle("dark-mode");
-  container.classList.toggle("dark-mode");
-  taskList.classList.toggle("dark-mode");
-  taskContainers.forEach((task) => {
-    task.classList.toggle("dark-mode");
-  });
-  darkModeIcon.src = document.body.classList.contains("dark-mode")
-    ? "light.svg"
-    : "dark.svg";
-});
+darkModeIcon.addEventListener("click", () => toggleDarkMode());
 
-// функции
-
-async function loadTasks() {
-  const response = await fetch(API_URL);
-  const data = await response.json();
-  data.forEach((todo) => renderTasks(todo.title, todo.completed, false));
-  loadLocalTasks();
-}
-
-function loadLocalTasks() {
+function loadTasks() {
   const localTasks = JSON.parse(localStorage.getItem("localTasks")) || [];
-  console.log(localTasks);
   localTasks.forEach((todo) => renderTasks(todo.title, todo.completed, true));
+  checkEmptyList();
 }
 
 function renderTasks(title, completed = false, local) {
@@ -91,9 +60,9 @@ function renderTasks(title, completed = false, local) {
   taskContainer.className = document.body.classList.contains("dark-mode")
     ? "task-container dark-mode"
     : "task-container";
-  local
-    ? taskContainer.classList.add("local-task")
-    : taskContainer.classList.remove("local-task");
+  if (local) {
+    taskContainer.classList.add("local-task");
+  }
   const checkboxAndTitle = document.createElement("label");
   checkboxAndTitle.className = "checkbox-and-title";
   const checkboxInput = document.createElement("input");
@@ -109,24 +78,20 @@ function renderTasks(title, completed = false, local) {
   taskContainer.appendChild(checkboxAndTitle);
   const featuresDiv = document.createElement("div");
   featuresDiv.className = "features";
-  const reminderIcon = document.createElement("img");
-  reminderIcon.src = "reminder.svg";
-  reminderIcon.className = "reminder-icon";
-  reminderIcon.alt = "Set Reminder";
-  featuresDiv.appendChild(reminderIcon);
-  const removeButton = document.createElement("div");
+  const editIcon = document.createElement("img");
+  editIcon.src = "edit.svg";
+  editIcon.className = "edit-icon";
+  editIcon.alt = "Edit task";
+  featuresDiv.appendChild(editIcon);
+  const removeButton = document.createElement("button");
   removeButton.className = "button remove-button";
   removeButton.addEventListener("click", () => {
     taskList.removeChild(taskContainer);
     saveTasks();
-    checkEmptyList();
   });
   featuresDiv.appendChild(removeButton);
   taskContainer.appendChild(featuresDiv);
   taskList.appendChild(taskContainer);
-  if (completed) {
-    reminderIcon.style.display = "none";
-  }
 }
 
 function addTask() {
@@ -136,7 +101,6 @@ function addTask() {
     renderTasks(title, false, true);
     input.value = "";
     saveTasks();
-    checkEmptyList();
   }
 }
 
@@ -152,6 +116,7 @@ function saveTasks() {
     }
   );
   localStorage.setItem("localTasks", JSON.stringify(tasks));
+  checkEmptyList();
 }
 
 function checkEmptyList() {
@@ -175,4 +140,24 @@ function filterTasks(filter) {
       task.style.display = checkbox.checked ? "none" : "flex";
     }
   });
+}
+
+function toggleDarkMode() {
+  const h1Title = document.getElementById("title");
+  const container = document.getElementById("container");
+  const taskContainers = document.querySelectorAll(".task-container");
+  document.body.classList.toggle("dark-mode");
+  h1Title.classList.toggle("dark-mode");
+  container.classList.toggle("dark-mode");
+  taskList.classList.toggle("dark-mode");
+  taskContainers.forEach((task) => {
+    task.classList.toggle("dark-mode");
+  });
+  darkModeIcon.src = document.body.classList.contains("dark-mode")
+    ? "light.svg"
+    : "dark.svg";
+  localStorage.setItem(
+    "theme",
+    document.body.classList.contains("dark-mode") ? "dark" : "light"
+  );
 }
